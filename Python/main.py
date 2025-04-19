@@ -20,6 +20,24 @@ def extract_request_url(request_data):
     return url
 
 
+def helper_generate_http_response(url):
+    if url == "/":
+        response = "HTTP/1.1 200 OK\r\n\r\n"
+    elif url.startswith('/echo/'):
+        body = url[len('/echo/'):]
+        response = (
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/plain\r\n"
+            "Content-Length: {0}\r\n"
+            "\r\n"
+            "{1}"
+        ).format(len(body), body)
+    else:
+        response = "HTTP/1.1 404 Not Found\r\n\r\n"
+
+    return response
+
+
 def main():
     # Initialize the server
     server_socket, conn, addr, logger = init_server()
@@ -32,10 +50,7 @@ def main():
     data = conn.recv(1024)
 
     url = extract_request_url(data.decode())
-    if url == "/":
-        response = "HTTP/1.1 200 OK\r\n\r\n"
-    else:
-        response = "HTTP/1.1 404 Not Found\r\n\r\n"
+    response = helper_generate_http_response(url)
 
     conn.sendall(response.encode())
 
