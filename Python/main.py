@@ -15,6 +15,11 @@ def init_server():
     return server_socket, conn, addr, logger
 
 
+def extract_request_url(request_data):
+    url = request_data.split('\r\n')[0].split(' ')[1]
+    return url
+
+
 def main():
     # Initialize the server
     server_socket, conn, addr, logger = init_server()
@@ -25,7 +30,13 @@ def main():
     It's because of the way TCP works. When you send a response, the socket buffer may not be flushed until you read from it.
     '''
     data = conn.recv(1024)
-    response = "HTTP/1.1 200 OK\r\n\r\n Hello world"
+
+    url = extract_request_url(data.decode())
+    if url == "/":
+        response = "HTTP/1.1 200 OK\r\n\r\n"
+    else:
+        response = "HTTP/1.1 404 Not Found\r\n\r\n"
+
     conn.sendall(response.encode())
 
 
