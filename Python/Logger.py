@@ -25,13 +25,13 @@ class Logger:
             raise ValueError(f"Unknown log level: {self.level}")
 
     def info(self, message):
-        print(f"[ {self.name} ] INFO: {message}")
+        print(f"[ {self.name} ] INFO ✅: {message}")
 
     def error(self, message):
-        print(f"[ {self.name} ] ERROR: {message}")
+        print(f"[ {self.name} ] ERROR ❌: {message}")
 
     def warn(self, message):
-        print(f"[ {self.name} ] WARN: {message}")
+        print(f"[ {self.name} ] WARN ⚠️ : {message}")
 
     def debug(self, message):
-        print(f"[ {self.name} ] DEBUG: {message}")
+        print(f"[ {self.name} ] DEBUG 🚨: {message}")
